@@ -16,13 +16,13 @@ namespace WebAPI.Controllers
         [HttpGet, Route("{id}")]
         public async Task GetAsync(string id, CancellationToken cancellationToken)
         {
-            var model = await _repository.GetAsync(id, cancellationToken);
+            var model = await _repository.GetFileAsync(id, cancellationToken);
         }
 
         [HttpPost]
         public async Task CreateAsync(CancellationToken cancellationToken)
         {
-            await _repository.DeleteAsync("", cancellationToken);
+            
         }
 
         [HttpPut]
@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public async Task DeleteAsync(CancellationToken cancellationToken)
         {
-
+            await _repository.DeleteAsync("", cancellationToken);
         }
 
     }
