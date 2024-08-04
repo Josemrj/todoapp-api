@@ -13,16 +13,38 @@ namespace WebAPI.Controllers
         }
         private readonly TodoRepository _repository;
 
+        [HttpGet]
+        public async Task<ActionResult> GetAsync(CancellationToken cancellationToken)
+        {
+            var models = await _repository.GetFileAsync(cancellationToken);
+            return Ok(
+                models.Select(s => new
+                {
+                    s.Id,
+                    s.Descricao,
+                    s.DataConclusao,
+                    s.IsConcluido
+                }).ToList());
+        }
+
         [HttpGet, Route("{id}")]
-        public async Task GetAsync(string id, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetAsync(string id, CancellationToken cancellationToken)
         {
             var model = await _repository.GetFileAsync(id, cancellationToken);
+            return Ok(
+                new
+                {
+                    model.Id,
+                    model.Descricao,
+                    model.DataConclusao,
+                    model.IsConcluido
+                });
         }
 
         [HttpPost]
         public async Task CreateAsync(CancellationToken cancellationToken)
         {
-            
+
         }
 
         [HttpPut]
