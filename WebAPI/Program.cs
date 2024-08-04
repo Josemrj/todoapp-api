@@ -1,3 +1,5 @@
+using WebAPI.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer()
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<TodoRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,12 +22,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-// Define a política de CORS
+// Define a polï¿½tica de CORS
 app.UseCors(c =>
 {
     c.AllowAnyOrigin() //Permitir qualquer origem.
      .AllowAnyHeader() //Permitir qualquer header.
-     .AllowAnyMethod(); //Permitir qualquer método.
+     .AllowAnyMethod(); //Permitir qualquer mï¿½todo.
 });
 
 app.UseAuthorization();
