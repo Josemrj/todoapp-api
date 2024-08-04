@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models;
 using WebAPI.Repositories;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -42,21 +44,45 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task CreateAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult> CreateAsync(TodoViewModel viewModel, CancellationToken cancellationToken)
         {
-
+            var model = new TodoModel(viewModel.Descricao);
+            await _repository.InsertOneAsync(model, cancellationToken);
+            return Ok();
         }
 
         [HttpPut]
-        public async Task EditAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult> EditAsync(TodoViewModel viewModel, CancellationToken cancellationToken)
         {
+            var model = await _repository.GetFileAsync(viewModel.Id, cancellationToken);
 
+            model.Update(descricao: viewModel.Descricao);
+
+            await _repository.UpdateAsync(model, cancellationToken);
+
+            return Ok();
         }
 
-        [HttpDelete]
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        [HttpPut(), Route("edit-concluido")]
+        public async Task<ActionResult> EditAsync(UpdateLoteViewModel viewModel, CancellationToken cancellationToken)
         {
-            await _repository.DeleteAsync("", cancellationToken);
+            var ids = viewModel.Itens.Select(s => s.Id).ToList();
+            var models = await _repository.GetFileAsync(ids, cancellationToken);
+
+            models.ForEach(item =>
+            {
+                var model = models.Single(w => w.Id == item.Id);
+                model.SetIsConcluido(true);
+            });
+
+            await _repository.UpdateAsync(models, cancellationToken);
+            return Ok();
+        }
+
+        [HttpDelete, Route("{id}")]
+        public async Task DeleteAsync(string id, CancellationToken cancellationToken)
+        {
+            await _repository.DeleteAsync(id, cancellationToken);
         }
 
     }

@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace WebAPI.Models
 {
-    public class Todo(string descricao)
+    public class TodoModel(string descricao)
     {
 
         [BsonId]
@@ -13,13 +13,13 @@ namespace WebAPI.Models
         public string Descricao { get; private set; } = descricao;
         public bool IsConcluido { get; private set; }
 
-        public Todo Update(string descricao)
+        public TodoModel Update(string descricao)
         {
             Descricao = descricao;
             return this;
         }
 
-        public Todo SetIsConcluido(bool isCocluido)
+        public TodoModel SetIsConcluido(bool isCocluido)
         {
             IsConcluido = isCocluido;
             DataConclusao = DateTime.Now;
