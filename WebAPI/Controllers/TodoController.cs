@@ -30,9 +30,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet, Route("{id}")]
-        public async Task<ActionResult> GetAsync(string id, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetAsync(int id, CancellationToken cancellationToken)
         {
-            var model = await _repository.GetFileAsync(id, cancellationToken);
+            var model = await _repository.GetFileAsync(id.ToString(), cancellationToken);
             return Ok(
                 new
                 {
@@ -41,6 +41,20 @@ namespace WebAPI.Controllers
                     model.DataConclusao,
                     model.IsConcluido
                 });
+        }
+
+        [HttpGet, Route("search/{search?}")]
+        public async Task<ActionResult> SearchAsync(string search, CancellationToken cancellationToken)
+        {
+            var models = await _repository.SearchAsync(search, cancellationToken);
+
+            return Ok(models.Select(s => new
+            {
+                s.Id,
+                s.DataConclusao,
+                s.Descricao,
+                s.IsConcluido
+            }).ToList());
         }
 
         [HttpPost]
@@ -79,10 +93,10 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete, Route("{id}")]
-        public async Task DeleteAsync(string id, CancellationToken cancellationToken)
+        [HttpDelete, Route("delete/{id}")]
+        public async Task DeleteAsync(int id, CancellationToken cancellationToken)
         {
-            await _repository.DeleteAsync(id, cancellationToken);
+            await _repository.DeleteAsync(id.ToString(), cancellationToken);
         }
 
     }

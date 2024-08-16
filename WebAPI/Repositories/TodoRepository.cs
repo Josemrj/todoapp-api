@@ -32,6 +32,11 @@ namespace WebAPI.Repositories
             return await _collection.Find(f => f.Id == id).SingleAsync(cancellationToken);
         }
 
+        public async Task<List<TodoModel>> SearchAsync(string search, CancellationToken cancellationToken)
+        {
+            return await _collection.Find(w => string.IsNullOrEmpty(search) || w.Descricao.Contains(search)).ToListAsync(cancellationToken);
+        }
+
         // Inserir um registro na coleção
         public async Task InsertOneAsync(TodoModel model, CancellationToken cancellationToken)
         {
