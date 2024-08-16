@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut(), Route("edit-concluido")]
+        [HttpPut, Route("edit-concluido")]
         public async Task<ActionResult> EditAsync(UpdateLoteViewModel viewModel, CancellationToken cancellationToken)
         {
             var ids = viewModel.Itens.Select(s => s.Id).ToList();
