@@ -4,15 +4,12 @@ using WebAPI.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.RegisterDataBase(builder)
-	.AddSwaggerGen()
+    .AddSwaggerGen()
     .AddCors()
-	.AddControllers();
+    .AddControllers();
 
-builder.Services
-    .AddEndpointsApiExplorer();
-
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<TodoRepository>();
 
 var app = builder.Build();
@@ -26,8 +23,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
-// Define a pol�tica de CORS
+// CORS settings
 app.UseCors(c =>
 {
     c.AllowAnyOrigin() 
