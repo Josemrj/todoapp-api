@@ -1,4 +1,4 @@
-# Todo Web - RESTful CRUD API
+# Todo App - RESTful CRUD API
 
 This repository is dedicated to the development of a complete application using the following technologies:
 
