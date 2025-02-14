@@ -1,8 +1,8 @@
 ﻿using MongoDB.Driver;
-using WebAPI.Configuration;
-using WebAPI.Models;
+using API.Configuration;
+using API.Models;
 
-namespace WebAPI.Repositories
+namespace API.Repositories
 {
     public class TodoRepository
     {
@@ -61,6 +61,5 @@ namespace WebAPI.Repositories
         {
             await _collection.DeleteOneAsync(f => f.Id == id, cancellationToken);
         }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace WebAPI.Configuration
+﻿namespace API.Configuration
 {
     public class DbSettings
     {

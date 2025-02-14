@@ -1,24 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Models;
-using WebAPI.Repositories;
-using WebAPI.ViewModels;
+using API.Models;
+using API.Repositories;
+using API.ViewModels;
 
-namespace WebAPI.Controllers
+namespace API.Controllers
 {
     [ApiController]
     [Route("todo")]
-    public class TodoController : ControllerBase
+    public class TodoController(TodoRepository repository) : ControllerBase
     {
-        public TodoController(TodoRepository repository)
-        {
-            _repository = repository;
-        }
-        private readonly TodoRepository _repository;
-
         [HttpGet]
         public async Task<ActionResult> GetAsync(CancellationToken cancellationToken)
         {
-            var models = await _repository.GetFileAsync(cancellationToken);
+            var models = await repository.GetFileAsync(cancellationToken);
             return Ok(
                 models.Select(s => new
                 {
@@ -32,7 +26,7 @@ namespace WebAPI.Controllers
         [HttpGet, Route("{id}")]
         public async Task<ActionResult> GetAsync(int id, CancellationToken cancellationToken)
         {
-            var model = await _repository.GetFileAsync(id.ToString(), cancellationToken);
+            var model = await repository.GetFileAsync(id.ToString(), cancellationToken);
             return Ok(
                 new
                 {
@@ -46,7 +40,7 @@ namespace WebAPI.Controllers
         [HttpGet, Route("search/{search?}")]
         public async Task<ActionResult> SearchAsync(string search, CancellationToken cancellationToken)
         {
-            var models = await _repository.SearchAsync(search, cancellationToken);
+            var models = await repository.SearchAsync(search, cancellationToken);
 
             return Ok(models.Select(s => new
             {
@@ -61,18 +55,18 @@ namespace WebAPI.Controllers
         public async Task<ActionResult> CreateAsync(TodoViewModel viewModel, CancellationToken cancellationToken)
         {
             var model = new TodoModel(viewModel.Descricao);
-            await _repository.InsertOneAsync(model, cancellationToken);
+            await repository.InsertOneAsync(model, cancellationToken);
             return Ok();
         }
 
         [HttpPut]
         public async Task<ActionResult> EditAsync(TodoViewModel viewModel, CancellationToken cancellationToken)
         {
-            var model = await _repository.GetFileAsync(viewModel.Id, cancellationToken);
+            var model = await repository.GetFileAsync(viewModel.Id, cancellationToken);
 
             model.Update(descricao: viewModel.Descricao);
 
-            await _repository.UpdateAsync(model, cancellationToken);
+            await repository.UpdateAsync(model, cancellationToken);
 
             return Ok();
         }
@@ -81,7 +75,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult> EditAsync(UpdateLoteViewModel viewModel, CancellationToken cancellationToken)
         {
             var ids = viewModel.Itens.Select(s => s.Id).ToList();
-            var models = await _repository.GetFileAsync(ids, cancellationToken);
+            var models = await repository.GetFileAsync(ids, cancellationToken);
 
             models.ForEach(item =>
             {
@@ -89,15 +83,12 @@ namespace WebAPI.Controllers
                 model.SetIsConcluido(true);
             });
 
-            await _repository.UpdateAsync(models, cancellationToken);
+            await repository.UpdateAsync(models, cancellationToken);
             return Ok();
         }
 
         [HttpDelete, Route("delete/{id}")]
         public async Task DeleteAsync(int id, CancellationToken cancellationToken)
-        {
-            await _repository.DeleteAsync(id.ToString(), cancellationToken);
-        }
-
+            => await repository.DeleteAsync(id.ToString(), cancellationToken);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace WebAPI.Configuration
+namespace API.Configuration
 {
     public static class ConfigureDatabase
     {

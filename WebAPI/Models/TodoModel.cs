@@ -1,11 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace WebAPI.Models
+namespace API.Models
 {
     public class TodoModel(string descricao)
     {
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; private set; }
@@ -25,6 +24,5 @@ namespace WebAPI.Models
             DataConclusao = DateTime.Now;
             return this;
         }
-
     }
 }

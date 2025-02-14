@@ -1,4 +1,4 @@
-﻿namespace WebAPI.ViewModels
+﻿namespace API.ViewModels
 {
     public class UpdateLoteViewModel
     {

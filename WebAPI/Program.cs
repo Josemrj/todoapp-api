@@ -1,5 +1,5 @@
-using WebAPI.Configuration;
-using WebAPI.Repositories;
+using API.Configuration;
+using API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
